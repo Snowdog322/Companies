@@ -7,6 +7,6 @@ use economy::economy as economymod;
 
 
 fn main() {
-    economymod::print();
+    economymod::main();
     mapmod::print();
 }
