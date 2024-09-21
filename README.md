@@ -8,4 +8,4 @@ trade: each of companies has its own market, they can import commodities from ot
 
 battles: companies can fight with each other on purpose of cutting off other companies trade routes
 
-user's interaction: player can trade with other companies by trade menu, where he can either import goods from other markets, or export his own commodities. The other way to interact with game is map, where player can develop his ports or fight with fleets of other companies
+user's interaction: player can trade with other companies by trade menu, where he can either import goods from other markets, or export his own commodities. The other way to interact with game is map, where player can develop his ports or fight with fleets of other companies.
