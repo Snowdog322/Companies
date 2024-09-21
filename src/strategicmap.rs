@@ -1,8 +1,7 @@
 //use bevy::prelude::*;
 
-
-pub mod economy{
+pub mod map{
     pub fn print(){
-        println!("economy test");
+        println!("map test");
     }
 }
