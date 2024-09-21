@@ -1,3 +1,8 @@
+mod economy;
+use economy::economy as economymod;
+//use bevy::prelude::*;
+
+
 fn main() {
-    println!("Hello, world!");
+    economymod::print();
 }
