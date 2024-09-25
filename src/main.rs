@@ -8,5 +8,5 @@ use economy::economy as economymod;
 
 fn main() {
     economymod::main();
-    mapmod::print();
+    mapmod::main();
 }

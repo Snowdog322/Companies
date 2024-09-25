@@ -19,7 +19,7 @@ pub mod map{
     }
 
 
-    pub fn print(){
+    pub fn main(){
         println!("map test");
     }
 }
