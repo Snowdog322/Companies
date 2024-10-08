@@ -12,6 +12,11 @@ pub mod economy{
         money: f32,
         
     }
+    impl Company{
+        fn add_money(&mut self, ammount:f32){
+            self.money+=ammount;
+        }
+    }
     pub struct Commodity{
         name: String,
         market_id: i32,
@@ -164,11 +169,11 @@ pub mod economy{
             money_transfer=count*(money_transfer+(money_transfer*(excise/100.0)));
             for(key,value) in & mut companies{
                 if(i1==value.market_id){
-                    value.money+=money_transfer;
+                    value.add_money(money_transfer);
                     
                 }
                 if(i2==value.market_id){
-                    value.money-=money_transfer;
+                    value.add_money(money_transfer*-1.0);
                 }
             }
             println!("market {} transfered {}$ -> market {}",i2,money_transfer,i1);
