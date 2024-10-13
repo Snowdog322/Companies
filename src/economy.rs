@@ -17,6 +17,8 @@ pub mod economy{
             self.money+=ammount;
         }
     }
+
+
     pub struct Commodity{
         name: String,
         market_id: i32,
@@ -25,6 +27,12 @@ pub mod economy{
         excise: f32,
         count:i32,
     }
+    impl Commodity{
+        fn change_price(&mut self, change:f32){
+            self.price+=change;
+        }
+    }
+
     pub struct TradeRoute{
         route_id:i32,
         selling_market_id:i32,
@@ -36,7 +44,7 @@ pub mod economy{
         type_id: i32,
     }
 
-    fn create_new_route(last_route_id:i32,selling_market_id:i32, buying_market_id:i32, commodity_id:i32, commodities_count:f32)->TradeRoute{
+    fn create_new_route(last_route_id:i32,selling_market_id:i32, buying_market_id:i32, commodity_id:i32,commodities_count:f32)->TradeRoute{
         let route_id=last_route_id+1;
         let returned_route=TradeRoute{
             route_id: route_id,
@@ -46,6 +54,18 @@ pub mod economy{
             commodities_count: commodities_count
         };
         return returned_route;
+    }
+    fn create_new_commodity(last_commodity_id:i32,name:String, market_id:i32,price:f32,excise:f32,count:i32)->Commodity{
+        let commodity_id=last_commodity_id+1;
+        let returned_commodity=Commodity{
+            name:name,
+            market_id:market_id,
+            commodity_id:commodity_id,
+            price:price,
+            excise:excise,
+            count:count,
+        };
+        return returned_commodity;
     }
 
         
@@ -83,33 +103,6 @@ pub mod economy{
             money:10000.0,
         };
 
-
-
-        let english_steel=Commodity{
-            name: String::from("steel"),
-            market_id: 1,
-            commodity_id: 1,
-            price: 10.0,
-            excise: 10.0,
-            count: 100,
-        };
-        let dutch_steel=Commodity{
-            name: String::from("steel"),
-            market_id: 2,
-            commodity_id: 1,
-            price: 1000.0,
-            excise: 10.0,
-            count: 0,
-        };
-        let spanish_steel=Commodity{
-            name: String::from("steel"),
-            market_id: 3,
-            commodity_id: 1,
-            price: 1000.0,
-            excise: 10.0,
-            count: 0,
-        };
-
         //companies{
         let mut companies=HashMap::new();
 
@@ -123,11 +116,24 @@ pub mod economy{
 
 
         //commodities{
-        let mut commodities=HashMap::new();
 
-        commodities.insert(1,english_steel);
-        commodities.insert(2,dutch_steel);
-        commodities.insert(3,spanish_steel);
+
+        let mut commodities=HashMap::new();
+        //last id, name, market id, price, excise, count,
+        let new_commodity=create_new_commodity(0, String::from("steel"), 1, 10.0, 10.0, 100);//english steel
+        commodities.insert(1,new_commodity);
+
+        let new_commodity=create_new_commodity(0, String::from("steel"), 2, 1000.0, 10.0, 0);//dutch steel
+        commodities.insert(2,new_commodity);
+
+        let new_commodity=create_new_commodity(0, String::from("steel"), 3, 1000.0, 10.0, 0);//spanish steel
+        commodities.insert(3,new_commodity);
+
+        let new_commodity=create_new_commodity(0, String::from("steel"), 4, 1000.0, 10.0, 0);//french steel
+        commodities.insert(4,new_commodity);
+
+        let new_commodity=create_new_commodity(0, String::from("steel"), 5, 1000.0, 10.0, 0);//portugal
+        commodities.insert(2,new_commodity);
         //}commodities^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
