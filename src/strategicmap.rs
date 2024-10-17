@@ -18,6 +18,16 @@ pub mod map{
         port_coordinates: Coordinates,
     }
 
+    pub struct Ship{
+        ship_id:i32,
+        cannons:i32,
+        speed:i32,
+        company_id:i32,
+        province_id:i32,
+        port_id:i32,
+        
+    }
+
 
     pub fn main(){
         println!("map test");
