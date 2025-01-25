@@ -1,10 +1,9 @@
 pub mod economy{
-    
 
 
     use bevy::prelude::*;
     use std::collections::HashMap;
-    
+
 
     pub struct Company{
         name: String,
@@ -17,6 +16,11 @@ pub mod economy{
             self.money+=ammount;
         }
     }
+    #[derive(Resource)]
+    pub struct Companies{
+        pub iteration:HashMap<i32,Company>
+    }
+
 
 
     pub struct Commodity{
@@ -69,12 +73,12 @@ pub mod economy{
         return returned_commodity;
     }
 
-
-        
-    pub fn trade(){
-        
-    }
     pub fn main(){
+        println!("economy test");
+    }
+
+
+    pub fn trade(mut companies: ResMut<Companies>){
         let england=Company{
             name: String::from("England"),
             market_id: 1,
@@ -106,13 +110,13 @@ pub mod economy{
         };
 
         //companies{
-        let mut companies=HashMap::new();
+        
 
-        companies.insert(1,england);
-        companies.insert(2,netherlands);
-        companies.insert(3,spain);
-        companies.insert(4,france);
-        companies.insert(5,portugal);
+        companies.iteration.insert(1,england);
+        companies.iteration.insert(2,netherlands);
+        companies.iteration.insert(3,spain);
+        companies.iteration.insert(4,france);
+        companies.iteration.insert(5,portugal);
 
         //}companies^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -151,13 +155,6 @@ pub mod economy{
 
         new_route=create_new_route(1,1,2,1,100.0);
         routes.insert(new_route.route_id,new_route);
-
-        
-
-        
-        //}trade routes^^^^^^^^^^^^^^^^^^^^^^^^^
-        
-
         for(key,value) in &routes{
             let cid=value.commodity_id;
             let i1=value.selling_market_id;
@@ -177,7 +174,7 @@ pub mod economy{
                 
             }
             money_transfer=count*(money_transfer+(money_transfer*(excise/100.0)));
-            for(key,value) in & mut companies{
+            for(key,value) in & mut companies.iteration{
                 if(i1==value.market_id){
                     value.add_money(money_transfer);
                     
@@ -189,17 +186,13 @@ pub mod economy{
             println!("market {} transfered {}$ -> market {}",i2,money_transfer,i1);
         }
 
-        if let Some(company)=companies.get_mut(&1) {
+        if let Some(company)=companies.iteration.get_mut(&1) {
             company.name = String::from("England");
         }
-        for(key, value) in &companies{
+        for(key, value) in &companies.iteration{
             println!("{key}: {} ${}",value.name,value.money);
         }
-
-        println!("economy test");
     }
-
-
 
 
 }
