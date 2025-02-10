@@ -44,18 +44,57 @@ pub mod map{
     }
 
     pub fn setup(mut commands:Commands, asset_server:Res<AssetServer>){
+
         commands
         .spawn(Camera2dBundle {
             transform: Transform::from_xyz(100.0, 200.0, 0.0),
             ..default()
         }).insert(Camera{});
-        
+        commands.spawn(NodeBundle {
+            style: Style {
+                width: Val::Percent(100.0),
+                height: Val::Percent(15.0),
+                position_type: PositionType::Absolute,
+                justify_content: JustifyContent::Center,
+                align_items: AlignItems::Center,
+                ..default()
+            },
+            background_color: BackgroundColor(Color::rgba(0.2, 0.2, 0.2, 1.0)),
+            ..default()
+        })
+        .with_children(|parent| {
+            parent.spawn(ImageBundle {
+                style: Style {
+                    width: Val::Px(300.0),
+                    height: Val::Px(300.0),
+                    left: Val::Percent(-28.5),
+                    ..default()
+                },
+                image: asset_server.load("piniundze.png").into(),
+                ..default()
+            });
+        })
+        .with_children(|parent| {
+            parent.spawn(TextBundle {
+                text: Text::from_section(
+                    "Piniundze: 100", 
+                    TextStyle {
+                        font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                        font_size: 30.0,
+                        color: Color::WHITE,
+                    },
+                ),
+                ..default()
+            });
+        });
         commands.spawn(SpriteBundle{
             texture: asset_server.load("mapa.png"),
             transform: Transform::from_xyz(0.0, 0.0, 0.0),
             ..default()
         });
         println!("sigma");
+
+
     }
 
     pub fn movement(keyboard_input:Res<ButtonInput<KeyCode>>, mut movement:Query<&mut Transform,With<Camera>>,time: Res<Time>){
