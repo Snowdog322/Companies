@@ -9,6 +9,7 @@ pub mod map{
     //use std::thread::spawn;
 
     use bevy::prelude::Camera2d;
+    use bevy_egui::egui::Rgba;
     const PLAYER_SPEED: f32 = 350.;
 
 
@@ -54,6 +55,45 @@ pub mod map{
             texture: asset_server.load("mapa.png"),
             transform: Transform::from_xyz(0.0, 0.0, 0.0),
             ..default()
+        });
+        commands
+        .spawn(NodeBundle {
+            background_color: BackgroundColor(Color::BLACK),
+            style: Style {
+                width: Val::Percent(100.0), 
+                height: Val::Percent(100.0),
+                justify_content: JustifyContent::Center,
+                align_items: AlignItems::Center,
+                ..default()
+            },
+            ..default()
+        })
+        .with_children(|parent| {
+            parent
+                .spawn(ButtonBundle {
+                    style: Style {
+                        width: Val::Px(200.0), 
+                        height: Val::Px(50.0),
+                        justify_content: JustifyContent::Center,
+                        align_items: AlignItems::Center,
+                        ..default()
+                    },
+                    background_color: BackgroundColor(Color::WHITE),
+                    ..default()
+                })
+                .with_children(|button| {
+                    button.spawn(TextBundle {
+                        text: Text::from_section(
+                            "Kliknij mnie",
+                            TextStyle {
+                                font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                                font_size: 30.0,
+                                color: Color::WHITE,
+                            },
+                        ),
+                        ..default()
+                    });
+                });
         });
         println!("sigma");
     }
