@@ -30,14 +30,14 @@ pub mod ui{
         for (interaction, mut color) in &mut query {
             match *interaction {
                 Interaction::Pressed => {
-                    println!("Zamykanie gry...");
+                    println!("Program ended succesfully");
                     exit.send(AppExit::Success);
                 }
                 Interaction::Hovered => {
-                    *color = BackgroundColor(Color::rgb(1.0, 0.3, 0.3)); // Jaśniejszy czerwony po najechaniu
+                    *color = BackgroundColor(Color::rgb(0.3, 0.3, 0.3)); // Jaśniejszy czerwony po najechaniu
                 }
                 Interaction::None => {
-                    *color = BackgroundColor(Color::rgb(0.8, 0.2, 0.2)); // Powrót do domyślnego koloru
+                    *color = BackgroundColor(Color::rgb(0.2, 0.2, 0.2)); // Powrót do domyślnego koloru
                 }
             }
         }
@@ -107,7 +107,7 @@ pub mod ui{
                             align_self: AlignSelf::Center,
                             ..default()
                         },
-                        background_color: BackgroundColor(Color::rgba(0.0, 0.0, 0.0, 0.5)),
+                        background_color: BackgroundColor(Color::rgba(0.0, 0.0, 0.0, 0.9)),
                         ..default()
                     },
                     EscapeMenu,
@@ -115,21 +115,27 @@ pub mod ui{
                     parent.spawn((
                         ButtonBundle {
                             style: Style {
-                                width: Val::Percent(10.0),
-                                height: Val::Percent(5.0),
+                                width: Val::Percent(40.0),
+                                height: Val::Percent(10.0),
                                 justify_content: JustifyContent::Center,
                                 align_items: AlignItems::Center,
-                                align_self: AlignSelf::FlexStart,
+                                align_self: AlignSelf::FlexEnd,
+                                margin: UiRect { 
+                                    left: (Val::Percent(5.0)),
+                                    right: (Val::Percent(5.0)), 
+                                    top: (Val::Percent(5.0)), 
+                                    bottom: (Val::Percent(5.0))
+                                },
                                 ..default()
                             },
-                            background_color: BackgroundColor(Color::rgb(0.8, 0.2, 0.2)), // Czerwony przycisk
+                            background_color: BackgroundColor(Color::rgb(0.2, 0.2, 0.2)),
                             ..default()
                         },
-                        ExitButton, // Komponent pozwalający rozpoznać przycisk
+                        ExitButton,
                     ))
                     .with_children(|button| {
                         button.spawn(TextBundle::from_section(
-                            "Exit",
+                            "Exit to main menu",
                             TextStyle {
                                 font_size: 25.0,
                                 color: Color::WHITE,
