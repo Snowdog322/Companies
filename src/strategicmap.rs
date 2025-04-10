@@ -43,7 +43,8 @@ pub mod map{
         println!("map test");
     }
 
-    pub fn setup(mut commands:Commands, asset_server:Res<AssetServer>){
+    pub fn setup(mut commands:Commands, asset_server:Res<AssetServer>, mut clear_color: ResMut<ClearColor>){
+        *clear_color = ClearColor(Color::BLACK);
         commands.spawn(SpriteBundle{
             texture: asset_server.load("mapa.png"),
             transform: Transform::from_xyz(0.0, 0.0, 0.0),

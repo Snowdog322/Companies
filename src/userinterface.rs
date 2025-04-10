@@ -1,11 +1,15 @@
 pub mod ui{
+    //use bevy::asset::Handle;
     use bevy::core_pipeline::deferred::node;
     use bevy::input::keyboard::{self, KeyboardInput};
+    use bevy::log::tracing_subscriber::reload::Handle;
     use bevy::prelude::*;
     use bevy::prelude::Camera2d;
     use bevy::scene::ron::de;
     use bevy::transform::commands;
     use bevy::app::AppExit;
+
+    use crate::economy::economy::Companies;
 
     #[derive(Component)]
     pub struct Camera{}
@@ -34,16 +38,16 @@ pub mod ui{
                     exit.send(AppExit::Success);
                 }
                 Interaction::Hovered => {
-                    *color = BackgroundColor(Color::rgb(0.3, 0.3, 0.3)); // Jaśniejszy czerwony po najechaniu
+                    *color = BackgroundColor(Color::rgb(0.3, 0.3, 0.3));
                 }
                 Interaction::None => {
-                    *color = BackgroundColor(Color::rgb(0.2, 0.2, 0.2)); // Powrót do domyślnego koloru
+                    *color = BackgroundColor(Color::rgb(0.2, 0.2, 0.2));
                 }
             }
         }
     }
     
-    pub fn ui_setup(mut commands:Commands, asset_server:Res<AssetServer>){
+    pub fn ui_setup(mut commands:Commands, asset_server:Res<AssetServer>, companies: ResMut<Companies>){
         commands.spawn(NodeBundle {
             style: Style {
                 width: Val::Percent(100.0),
@@ -71,7 +75,7 @@ pub mod ui{
         .with_children(|parent| {
             parent.spawn(TextBundle {
                 text: Text::from_section(
-                    "$100", 
+                    format!("${}", companies.iteration.get(&1).map_or(0.0, |company| company.money)), 
                     TextStyle {
                         font: asset_server.load("fonts/FiraSans-Bold.ttf"),
                         font_size: 30.0,
@@ -86,12 +90,43 @@ pub mod ui{
                 ..default()
             });
         });
+
+        //side panel
+
+        commands.spawn(NodeBundle{
+            style: Style{
+                width: Val::Percent((12.0)),
+                ..Default::default()
+            },
+            background_color: BackgroundColor(Color::rgba(0.2, 0.2, 0.2, 1.0)),
+            ..default()
+        }).with_children(|parent|{
+            parent.spawn(ButtonBundle{
+
+                ..default()
+            }).with_children(|parent|{
+                parent.spawn(ImageBundle{
+                    image: asset_server.load("uicargobox.png").into(),
+                    style: Style {
+                        width: Val::Percent(30.0),
+                        height: Val::Percent(3.0),
+                        ..default()
+                    },
+                    ..default()
+                });
+            });
+        });
+
     }
+
+
     pub fn esc(keyboard_input:Res<ButtonInput<KeyCode>>, mut escape:ResMut<Escape>, mut exit: EventWriter<AppExit>){
         if(keyboard_input.just_pressed(KeyCode::Escape)){
             escape.isclicked = !escape.isclicked;
         }
     }
+
+
     pub fn escmenu(mut commands:Commands, asset_server:Res<AssetServer>, escape:Res<Escape>, mut exit: EventWriter<AppExit>, query: Query<Entity, With<EscapeMenu>>,){
         if escape.isclicked {
             if query.is_empty() {

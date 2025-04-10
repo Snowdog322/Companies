@@ -8,7 +8,7 @@ pub mod economy{
     pub struct Company{
         name: String,
         market_id: i32,
-        money: f32,
+        pub money: f32,
         
     }
     impl Company{
@@ -178,9 +178,6 @@ pub mod economy{
                 if(i1==value.market_id){
                     value.add_money(money_transfer);
                     
-                }
-                if(i2==value.market_id){
-                    value.add_money(money_transfer*-1.0);
                 }
             }
             println!("market {} transfered {}$ -> market {}",i2,money_transfer,i1);

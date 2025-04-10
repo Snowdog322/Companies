@@ -20,15 +20,14 @@ fn main() {
     .insert_resource(Escape{isclicked: false})
     .add_plugins(DefaultPlugins.set(WindowPlugin {
         primary_window: Some(Window {
-            mode: WindowMode::Fullscreen, // Ustawienie pełnoekranowego trybu
-            present_mode: PresentMode::AutoVsync, // Płynniejsze odświeżanie
+            mode: WindowMode::Fullscreen,
+            present_mode: PresentMode::AutoVsync,
             ..default()
         }),
         ..default()
     }))
     .add_plugins(WorldInspectorPlugin::new())
-    .add_systems(Startup, (mapmod::setup, interface::ui_setup))
-    .add_systems(Startup, economymod::trade)
+    .add_systems(Startup, (economymod::trade, mapmod::setup, interface::ui_setup))
     .add_systems(Update, (mapmod::movement, interface::esc, interface::escmenu, interface::exit_system))
     .run();
 }
