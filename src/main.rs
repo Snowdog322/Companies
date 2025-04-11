@@ -5,7 +5,7 @@ mod userinterface;
 use std::collections::HashMap;
 use strategicmap::map as mapmod;
 use economy::economy as economymod;
-use userinterface::ui::{self as interface, Escape};
+use userinterface::ui::{self as interface, Escape, MarketMenu};
 use bevy::prelude::*;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use bevy::window::{PresentMode, Window, WindowMode};
@@ -18,6 +18,7 @@ fn main() {
     App::new()
     .insert_resource(companies)
     .insert_resource(Escape{isclicked: false})
+    .insert_resource(MarketMenu{isclicked: false})
     .add_plugins(DefaultPlugins.set(WindowPlugin {
         primary_window: Some(Window {
             mode: WindowMode::Fullscreen,

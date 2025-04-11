@@ -20,32 +20,22 @@ pub mod ui{
     #[derive(Component)]
     pub struct ExitButton;
 
+    #[derive(Component)]
+    pub struct MarketButton;
+
     #[derive(Resource)]
     pub struct Escape{
         pub isclicked:bool
     }
-
-
-
-    pub fn exit_system(
-        mut exit: EventWriter<AppExit>,
-        mut query: Query<(&Interaction, &mut BackgroundColor), (Changed<Interaction>, With<ExitButton>)>,
-    ) {
-        for (interaction, mut color) in &mut query {
-            match *interaction {
-                Interaction::Pressed => {
-                    println!("Program ended succesfully");
-                    exit.send(AppExit::Success);
-                }
-                Interaction::Hovered => {
-                    *color = BackgroundColor(Color::rgb(0.3, 0.3, 0.3));
-                }
-                Interaction::None => {
-                    *color = BackgroundColor(Color::rgb(0.2, 0.2, 0.2));
-                }
-            }
-        }
+    #[derive(Resource)]
+    pub struct MarketMenu{
+        pub isclicked:bool
     }
+    
+
+
+
+
     
     pub fn ui_setup(mut commands:Commands, asset_server:Res<AssetServer>, companies: ResMut<Companies>){
         commands.spawn(NodeBundle {
@@ -91,25 +81,27 @@ pub mod ui{
             });
         });
 
-        //side panel
-
         commands.spawn(NodeBundle{
-            style: Style{
-                width: Val::Percent((12.0)),
-                ..Default::default()
+            style: Style {
+                width: Val::Percent(10.0),
+                height: Val::Percent(100.0),
+                ..default()
             },
             background_color: BackgroundColor(Color::rgba(0.2, 0.2, 0.2, 1.0)),
             ..default()
         }).with_children(|parent|{
-            parent.spawn(ButtonBundle{
-
+            parent.spawn((ButtonBundle{
+                style: Style {
+                    top: Val::Percent(15.0),
+                    width: Val::Percent(100.0),
+                    height: Val::Percent(9.0),
+                    ..default()
+                },
                 ..default()
-            }).with_children(|parent|{
+            },MarketButton)).with_children(|parent|{
                 parent.spawn(ImageBundle{
                     image: asset_server.load("uicargobox.png").into(),
                     style: Style {
-                        width: Val::Percent(30.0),
-                        height: Val::Percent(3.0),
                         ..default()
                     },
                     ..default()
@@ -186,6 +178,46 @@ pub mod ui{
             }
         }
     }
+
+    pub fn exit_system(
+        mut exit: EventWriter<AppExit>,
+        mut query: Query<(&Interaction, &mut BackgroundColor), (Changed<Interaction>, With<ExitButton>)>,
+    ) {
+        for (interaction, mut color) in &mut query {
+            match *interaction {
+                Interaction::Pressed => {
+                    println!("Program ended succesfully");
+                    exit.send(AppExit::Success);
+                }
+                Interaction::Hovered => {
+                    *color = BackgroundColor(Color::rgb(0.3, 0.3, 0.3));
+                }
+                Interaction::None => {
+                    *color = BackgroundColor(Color::rgb(0.2, 0.2, 0.2));
+                }
+            }
+        }
+    }
+
+    fn market_button(
+        mut interaction_query: Query<(&Interaction, &mut BackgroundColor), (Changed<Interaction>, With<MarketButton>)>,
+    ) {
+        for (interaction, mut color) in interaction_query.iter_mut() {
+            match *interaction {
+                Interaction::Pressed => {
+                    *color = BackgroundColor(Color::rgb(0.3, 0.3, 0.3));
+                    println!("Kliknięto przycisk!");
+                }
+                Interaction::Hovered => {
+                    *color = BackgroundColor(Color::rgb(0.6, 0.6, 0.6));
+                }
+                Interaction::None => {
+                    *color = BackgroundColor(Color::rgb(0.2, 0.2, 0.2));
+                }
+            }
+        }
+    }
 }
+
 
 
