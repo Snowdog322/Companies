@@ -29,6 +29,6 @@ fn main() {
     }))
     .add_plugins(WorldInspectorPlugin::new())
     .add_systems(Startup, (economymod::trade, mapmod::setup, interface::ui_setup))
-    .add_systems(Update, (mapmod::movement, interface::esc, interface::escmenu, interface::exit_system))
+    .add_systems(Update, (mapmod::movement, interface::esc, interface::escmenu, interface::exit_system, interface::market_button))
     .run();
 }

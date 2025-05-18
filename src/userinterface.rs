@@ -1,12 +1,5 @@
 pub mod ui{
-    //use bevy::asset::Handle;
-    use bevy::core_pipeline::deferred::node;
-    use bevy::input::keyboard::{self, KeyboardInput};
-    use bevy::log::tracing_subscriber::reload::Handle;
     use bevy::prelude::*;
-    use bevy::prelude::Camera2d;
-    use bevy::scene::ron::de;
-    use bevy::transform::commands;
     use bevy::app::AppExit;
 
     use crate::economy::economy::Companies;
@@ -23,20 +16,27 @@ pub mod ui{
     #[derive(Component)]
     pub struct MarketButton;
 
+    #[derive(Component)]
+    pub struct MarketMenuNode;
+
     #[derive(Resource)]
     pub struct Escape{
         pub isclicked:bool
     }
+
     #[derive(Resource)]
     pub struct MarketMenu{
         pub isclicked:bool
     }
-    
 
+    pub fn create_import_route() {
+        println!("Utwórz szlak importowy (funkcja pusta).);");
+    }
 
+    pub fn create_export_route() {
+        println!("Utwórz szlak eksportowy (funkcja pusta).);");
+    }
 
-
-    
     pub fn ui_setup(mut commands:Commands, asset_server:Res<AssetServer>, companies: ResMut<Companies>){
         commands.spawn(NodeBundle {
             style: Style {
@@ -108,16 +108,13 @@ pub mod ui{
                 });
             });
         });
-
     }
-
 
     pub fn esc(keyboard_input:Res<ButtonInput<KeyCode>>, mut escape:ResMut<Escape>, mut exit: EventWriter<AppExit>){
         if(keyboard_input.just_pressed(KeyCode::Escape)){
             escape.isclicked = !escape.isclicked;
         }
     }
-
 
     pub fn escmenu(mut commands:Commands, asset_server:Res<AssetServer>, escape:Res<Escape>, mut exit: EventWriter<AppExit>, query: Query<Entity, With<EscapeMenu>>,){
         if escape.isclicked {
@@ -132,6 +129,7 @@ pub mod ui{
                             align_items: AlignItems::Center,
                             justify_self: JustifySelf::Center,
                             align_self: AlignSelf::Center,
+                            margin: UiRect::all(Val::Auto),
                             ..default()
                         },
                         background_color: BackgroundColor(Color::rgba(0.0, 0.0, 0.0, 0.9)),
@@ -199,14 +197,86 @@ pub mod ui{
         }
     }
 
-    fn market_button(
+    pub fn market_button(
+        mut commands: Commands,
+        asset_server: Res<AssetServer>,
         mut interaction_query: Query<(&Interaction, &mut BackgroundColor), (Changed<Interaction>, With<MarketButton>)>,
+        menu_query: Query<Entity, With<MarketMenuNode>>,
     ) {
         for (interaction, mut color) in interaction_query.iter_mut() {
             match *interaction {
                 Interaction::Pressed => {
                     *color = BackgroundColor(Color::rgb(0.3, 0.3, 0.3));
-                    println!("Kliknięto przycisk!");
+                    if menu_query.is_empty() {
+                        commands.spawn((
+                            NodeBundle {
+                                style: Style {
+                                    width: Val::Percent(30.0),
+                                    height: Val::Percent(40.0),
+                                    position_type: PositionType::Absolute,
+                                    top: Val::Percent(30.0),
+                                    left: Val::Percent(35.0),
+                                    justify_content: JustifyContent::Center,
+                                    align_items: AlignItems::Center,
+                                    flex_direction: FlexDirection::Column,
+                                    padding: UiRect::all(Val::Px(10.0)),
+                                    ..default()
+                                },
+                                background_color: BackgroundColor(Color::rgba(0.0, 0.0, 0.0, 0.85)),
+                                ..default()
+                            },
+                            MarketMenuNode,
+                        ))
+                        .with_children(|parent| {
+                            parent.spawn(ButtonBundle {
+                                style: Style {
+                                    width: Val::Percent(90.0),
+                                    height: Val::Px(40.0),
+                                    margin: UiRect::all(Val::Px(5.0)),
+                                    justify_content: JustifyContent::Center,
+                                    align_items: AlignItems::Center,
+                                    ..default()
+                                },
+                                background_color: BackgroundColor(Color::rgb(0.2, 0.4, 0.2)),
+                                ..default()
+                            }).with_children(|button| {
+                                button.spawn(TextBundle::from_section(
+                                    "Utwórz szlak importowy",
+                                    TextStyle {
+                                        font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                                        font_size: 20.0,
+                                        color: Color::WHITE,
+                                    },
+                                ));
+                            });
+
+                            parent.spawn(ButtonBundle {
+                                style: Style {
+                                    width: Val::Percent(90.0),
+                                    height: Val::Px(40.0),
+                                    margin: UiRect::all(Val::Px(5.0)),
+                                    justify_content: JustifyContent::Center,
+                                    align_items: AlignItems::Center,
+                                    ..default()
+                                },
+                                background_color: BackgroundColor(Color::rgb(0.4, 0.2, 0.2)),
+                                ..default()
+                            }).with_children(|button| {
+                                button.spawn(TextBundle::from_section(
+                                    "Utwórz szlak eksportowy",
+                                    TextStyle {
+                                        font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                                        font_size: 20.0,
+                                        color: Color::WHITE,
+                                    },
+                                ));
+                            });
+                        });
+                    } else {
+                        for entity in menu_query.iter() {
+                            commands.entity(entity).despawn_recursive();
+                        }
+                    }
                 }
                 Interaction::Hovered => {
                     *color = BackgroundColor(Color::rgb(0.6, 0.6, 0.6));
@@ -218,6 +288,3 @@ pub mod ui{
         }
     }
 }
-
-
-
