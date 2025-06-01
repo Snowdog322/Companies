@@ -191,5 +191,112 @@ pub mod economy{
         }
     }
 
+    pub fn open_trade_menu(mut commands: Commands, asset_server: Res<AssetServer>) {
+    commands
+        .spawn(NodeBundle {
+            style: Style {
+                width: Val::Percent(40.0),
+                height: Val::Percent(50.0),
+                position_type: PositionType::Absolute,
+                top: Val::Percent(25.0),
+                left: Val::Percent(30.0),
+                flex_direction: FlexDirection::Column,
+                align_items: AlignItems::FlexStart,
+                justify_content: JustifyContent::FlexStart,
+                padding: UiRect::all(Val::Px(10.0)),
+                row_gap: Val::Px(10.0),
+                ..default()
+            },
+            background_color: BackgroundColor(Color::rgba(0.1, 0.1, 0.1, 0.95)),
+            ..default()
+        })
+        .with_children(|parent| {
+            // Label: Wybierz kompanię
+            parent.spawn(TextBundle::from_section(
+                "Wybierz kompanię:",
+                TextStyle {
+                    font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                    font_size: 20.0,
+                    color: Color::WHITE,
+                },
+            ));
+
+            // Placeholder: lista kompanii
+            parent.spawn(ButtonBundle {
+                style: Style {
+                    width: Val::Percent(90.0),
+                    height: Val::Px(40.0),
+                    ..default()
+                },
+                background_color: BackgroundColor(Color::rgb(0.3, 0.3, 0.6)),
+                ..default()
+            }).with_children(|button| {
+                button.spawn(TextBundle::from_section(
+                    "[Kompania Placeholder]",
+                    TextStyle {
+                        font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                        font_size: 18.0,
+                        color: Color::WHITE,
+                    },
+                ));
+            });
+
+            parent.spawn(TextBundle::from_section(
+                "Wybierz towar:",
+                TextStyle {
+                    font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                    font_size: 20.0,
+                    color: Color::WHITE,
+                },
+            ));
+
+            parent.spawn(ButtonBundle {
+                style: Style {
+                    width: Val::Percent(90.0),
+                    height: Val::Px(40.0),
+                    ..default()
+                },
+                background_color: BackgroundColor(Color::rgb(0.6, 0.3, 0.3)),
+                ..default()
+            }).with_children(|button| {
+                button.spawn(TextBundle::from_section(
+                    "[Towar Placeholder]",
+                    TextStyle {
+                        font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                        font_size: 18.0,
+                        color: Color::WHITE,
+                    },
+                ));
+            });
+
+            parent.spawn(TextBundle::from_section(
+                "Wybierz ilość:",
+                TextStyle {
+                    font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                    font_size: 20.0,
+                    color: Color::WHITE,
+                },
+            ));
+
+            parent.spawn(ButtonBundle {
+                style: Style {
+                    width: Val::Percent(90.0),
+                    height: Val::Px(40.0),
+                    ..default()
+                },
+                background_color: BackgroundColor(Color::rgb(0.2, 0.5, 0.2)),
+                ..default()
+            }).with_children(|button| {
+                button.spawn(TextBundle::from_section(
+                    "[Ilość Placeholder]",
+                    TextStyle {
+                        font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                        font_size: 18.0,
+                        color: Color::WHITE,
+                    },
+                ));
+            });
+        });
+}
 
 }

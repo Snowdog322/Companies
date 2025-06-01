@@ -222,7 +222,7 @@ pub mod ui{
                                     padding: UiRect::all(Val::Px(10.0)),
                                     ..default()
                                 },
-                                background_color: BackgroundColor(Color::rgba(0.0, 0.0, 0.0, 0.85)),
+                                background_color: BackgroundColor(Color::rgba(0.0, 0.0, 0.0, 1.0)),
                                 ..default()
                             },
                             MarketMenuNode,
